@@ -14,7 +14,10 @@ public class SecurityConfig {
 
     @Bean
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
-        return http.authorizeExchange()
+        return http
+                .csrf().disable()
+                .authorizeExchange()
+                .pathMatchers("/api/user/register").permitAll()
                 .anyExchange().authenticated()
                 .and().formLogin()
                 .and().build();

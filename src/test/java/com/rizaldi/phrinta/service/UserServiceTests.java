@@ -52,11 +52,11 @@ public class UserServiceTests {
     }
 
     @Test
-    public void testSave_expectSuccess() {
+    public void testUpdate_expectSuccess() {
         User user = generateDummyUser();
         service.insert(user).block();
         user.setName("Uvuvwevwevwe Onyetenyevwe Ugwemubwem Osas");
-        service.save(user).block();
+        service.update(user).block();
     }
 
     private User generateDummyUser() {
