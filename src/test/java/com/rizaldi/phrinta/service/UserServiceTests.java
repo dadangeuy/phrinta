@@ -10,8 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Optional;
-
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class UserServiceTests {
@@ -21,30 +19,30 @@ public class UserServiceTests {
     @Test
     public void testGet_expectPresent() {
         User user = generateDummyUser();
-        service.insert(user).block();
-        Optional<User> optionalUser = service.get(user.getUsername()).blockOptional();
-        Assert.assertTrue(optionalUser.isPresent());
+        service.insert(user);
+        User dbUser = service.get(user.getUsername());
+        Assert.assertNotNull(dbUser);
     }
 
     @Test
     public void testGet_expectNotPresent() {
         String username = RandomStringUtils.randomAlphanumeric(10);
-        Optional<User> optionalUser = service.get(username).blockOptional();
-        Assert.assertFalse(optionalUser.isPresent());
+        User user = service.get(username);
+        Assert.assertNull(user);
     }
 
     @Test
     public void testInsert_expectSuccess() {
         User user = generateDummyUser();
-        service.insert(user).block();
+        service.insert(user);
     }
 
     @Test
     public void testInsert_expectDuplicateFail() {
         try {
             User user = generateDummyUser();
-            service.insert(user).block();
-            service.insert(user).block();
+            service.insert(user);
+            service.insert(user);
             throw new RuntimeException("Not Duplicate");
         } catch (DuplicateKeyException e) {
             // expected
@@ -54,9 +52,9 @@ public class UserServiceTests {
     @Test
     public void testUpdate_expectSuccess() {
         User user = generateDummyUser();
-        service.insert(user).block();
+        service.insert(user);
         user.setName("Uvuvwevwevwe Onyetenyevwe Ugwemubwem Osas");
-        service.update(user).block();
+        service.update(user);
     }
 
     private User generateDummyUser() {

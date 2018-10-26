@@ -10,7 +10,7 @@ import java.util.Set;
 
 @Builder
 @Data
-@Document
+@Document(collection = "user")
 public class User {
     @Id
     private String username;
@@ -21,5 +21,11 @@ public class User {
 
     public enum Role {
         USER, ADMIN
+    }
+
+    public static User fromUsername(String username) {
+        return builder()
+                .username(username)
+                .build();
     }
 }

@@ -4,7 +4,6 @@ import com.rizaldi.phrinta.model.User;
 import com.rizaldi.phrinta.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Mono;
 
 import java.util.Collections;
 import java.util.Set;
@@ -21,21 +20,20 @@ public class UserService {
         this.repository = repository;
     }
 
-    public Mono<User> get(String username) {
-        return repository.findById(username);
+    public User get(String username) {
+        return repository.findById(username).orElse(null);
     }
 
-    public Mono<User> insert(User user) {
+    public User insert(User user) {
         String encodedPassword = encoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
         user.setRoles(BASIC_ROLES);
         return repository.insert(user);
     }
 
-    public Mono<User> update(User user) {
-        return get(user.getUsername())
-                .map(User::getPassword)
-                .map(password -> user.getPassword().equals(password))
-                .flatMap(isMatch -> isMatch ? repository.save(user) : Mono.error(PASSWORD_NOT_MATCH));
+    public User update(User user) {
+        boolean authorized = repository.existsByUsernameAndPassword(user.getUsername(), user.getPassword());
+        if (authorized) return repository.save(user);
+        throw PASSWORD_NOT_MATCH;
     }
 }

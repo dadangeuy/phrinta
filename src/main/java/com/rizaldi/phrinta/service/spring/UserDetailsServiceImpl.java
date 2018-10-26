@@ -1,14 +1,14 @@
 package com.rizaldi.phrinta.service.spring;
 
 import com.rizaldi.phrinta.service.UserService;
-import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Mono;
 
 @Service
-public class UserDetailsServiceImpl implements ReactiveUserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService {
     private final UserService userService;
 
     public UserDetailsServiceImpl(UserService userService) {
@@ -16,13 +16,13 @@ public class UserDetailsServiceImpl implements ReactiveUserDetailsService {
     }
 
     @Override
-    public Mono<UserDetails> findByUsername(String username) {
-        return userService.get(username)
-                .map(user -> User.withUsername(user.getUsername())
-                        .password(user.getPassword())
-                        .roles(user.getRoles().stream()
-                                .map(Enum::name)
-                                .toArray(String[]::new))
-                        .build());
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        com.rizaldi.phrinta.model.User internalUser = userService.get(username);
+        return User.withUsername(internalUser.getUsername())
+                .password(internalUser.getPassword())
+                .roles(internalUser.getRoles().stream()
+                        .map(Enum::name)
+                        .toArray(String[]::new))
+                .build();
     }
 }
