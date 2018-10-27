@@ -18,6 +18,11 @@ public class AdminController {
         this.service = service;
     }
 
+    @GetMapping("")
+    public String rootView() {
+        return "redirect:/admin/queue";
+    }
+
     @GetMapping("queue")
     public String queueList(Model model) {
         List<PrintJob> printJobs = service.getAllJob();
