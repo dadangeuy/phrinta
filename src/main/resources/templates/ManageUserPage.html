@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Manage User</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+<nav class="navbar has-shadow" role="navigation" aria-label="main navigation" style="margin-bottom: 20px">
+    <div class="container">
+        <div class="navbar-brand">
+            <div class="navbar-item">
+            <span>
+                <p class="title">Phrinta</p>
+            </span>
+                <span class="icon is-large has-text-primary">
+                  <i class="fas fa-2x fa-copy"></i>
+                </span>
+            </div>
+        </div>
+
+        <div class="navbar-end">
+            <div class="navbar-item">
+                <div class="buttons">
+                    <a class="button is-primary" href="/logout">
+                        <strong>Logout</strong>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="tile is-ancestor is-vertical">
+        <div class="tile is-parent">
+            <article class="tile is-child notification is-success">
+                <p class="title">Add User</p>
+                <div class="content">
+                    <form id="create-form" onsubmit="addUser(this, event)">
+                        <div class="field">
+                            <input class="input" type="text" placeholder="Username">
+                        </div>
+                        <div class="field">
+                            <input class="input" type="text" placeholder="Password">
+                        </div>
+                        <div class="field">
+                            <input class="input" type="text" placeholder="Name">
+                        </div>
+                        <div class="field">
+                            <input class="input" type="text" placeholder="Roles">
+                        </div>
+                        <button class="button" type="submit">Submit</button>
+                    </form>
+
+
+                    <!-- Add User -->
+                    <script type="text/javascript">
+                        function addUser(form, event) {
+                            // disable refresh
+                            event.preventDefault();
+
+                            var username = form.elements[0].value;
+                            var password = form.elements[1].value;
+                            var name = form.elements[2].value;
+                            var roles = JSON.parse(form.elements[3].value);
+
+                            var user = {
+                                "username": username,
+                                "password": password,
+                                "name": name,
+                                "roles": roles
+                            };
+
+                            $.ajax({
+                                type: "POST",
+                                url: "/api/user/register",
+                                data: JSON.stringify(user),
+                                contentType: "application/json",
+                                dataType: "json",
+                                error: function (e) {
+                                    alert(e.responseText);
+                                },
+                                success: function (data) {
+                                    location.reload();
+                                }
+                            });
+                        }
+                    </script>
+
+                </div>
+            </article>
+        </div>
+        <div class="tile is-parent">
+            <article class="tile is-child notification is-success">
+                <p class="title">Registered User</p>
+                <div class="content">
+                    <table class="table is-hoverable">
+                        <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Name</th>
+                            <th>Roles</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr th:each="user : ${users}">
+                            <td th:text="${user.username}"></td>
+                            <td th:text="${user.name}"></td>
+                            <td th:text="${user.roles}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </article>
+        </div>
+    </div>
+</div>
+</body>
+</html>

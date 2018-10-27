@@ -6,6 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -24,10 +25,14 @@ public class UserService {
         return repository.findById(username).orElse(null);
     }
 
+    public List<User> getAll() {
+        return repository.findAll();
+    }
+
     public User insert(User user) {
         String encodedPassword = encoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
-        user.setRoles(BASIC_ROLES);
+        if (user.getRoles() == null || user.getRoles().isEmpty()) user.setRoles(BASIC_ROLES);
         return repository.insert(user);
     }
 
@@ -35,5 +40,9 @@ public class UserService {
         boolean authorized = repository.existsByUsernameAndPassword(user.getUsername(), user.getPassword());
         if (authorized) return repository.save(user);
         throw PASSWORD_NOT_MATCH;
+    }
+
+    public void delete(String id) {
+        repository.deleteById(id);
     }
 }
