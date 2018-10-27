@@ -18,6 +18,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         com.rizaldi.phrinta.model.User internalUser = userService.get(username);
+        if (internalUser == null) throw new UsernameNotFoundException(username + " doesn't exist in mongodb");
         return User.withUsername(internalUser.getUsername())
                 .password(internalUser.getPassword())
                 .roles(internalUser.getRoles().stream()
