@@ -33,6 +33,6 @@ public class PrintJob {
     }
 
     public enum Status {
-        UPLOADING, WAITING, REJECTED, DONE
+        UPLOADING, WAITING, REJECTED, PROCESS, DONE
     }
 }
