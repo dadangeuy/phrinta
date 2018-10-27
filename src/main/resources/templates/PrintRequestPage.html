@@ -45,7 +45,7 @@
                         <div class="file has-name is-fullwidth" style="margin-bottom: 10px">
                             <label class="file-label">
                                 <input class="file-input" type="file" name="file" accept=".txt,.c,.cpp,.java" required
-                                       onchange="showFileName(this.value)">
+                                       onchange="showFileName(this)">
                                 <span class="file-cta">
                                   <span class="file-icon"><i class="fas fa-upload"></i></span>
                                   <span class="file-label">Choose a file…</span>
@@ -56,9 +56,9 @@
                                 <script type="text/javascript">
                                     var filenameContainer = document.getElementById("filename");
 
-                                    function showFileName(name) {
-                                        if (name == null || name === "") filenameContainer.textContent = "Select a File (.txt, .c, .cpp, or .java)";
-                                        else filenameContainer.textContent = name;
+                                    function showFileName(fileInput) {
+                                        if (fileInput.value === "") filenameContainer.textContent = "Select a File (.txt, .c, .cpp, or .java)";
+                                        else filenameContainer.textContent = fileInput.files[0].name;
                                     }
                                 </script>
 
