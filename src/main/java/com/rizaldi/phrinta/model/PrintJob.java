@@ -7,10 +7,15 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 @Builder
 @Data
 @Document(collection = "print.job")
 public class PrintJob {
+    private static final DateFormat format = new SimpleDateFormat("dd MMMM yyyy, HH:mm");
     @Id
     private String id;
     @Indexed
@@ -22,7 +27,12 @@ public class PrintJob {
     @Indexed
     private Status status;
 
+    public String getCreatedAtDateFormat() {
+        Date date = new Date(createdAt);
+        return format.format(date);
+    }
+
     public enum Status {
-        UPLOAD, PENDING, DONE
+        UPLOADING, WAITING, REJECTED, DONE
     }
 }

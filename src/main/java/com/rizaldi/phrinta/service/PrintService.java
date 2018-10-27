@@ -28,7 +28,7 @@ public class PrintService {
         PrintJob job = PrintJob.builder()
                 .user(User.fromUsername(username))
                 .filename(file.getOriginalFilename())
-                .status(PrintJob.Status.UPLOAD)
+                .status(PrintJob.Status.UPLOADING)
                 .createdAt(System.currentTimeMillis())
                 .build();
         repository.insert(job);
@@ -39,7 +39,7 @@ public class PrintService {
 
         // update job
         job.setGridFsName(uniqueFilename);
-        job.setStatus(PrintJob.Status.PENDING);
+        job.setStatus(PrintJob.Status.WAITING);
         repository.save(job);
 
         return job;
@@ -47,6 +47,10 @@ public class PrintService {
 
     public List<PrintJob> findJob(String username) {
         return repository.findByUser_UsernameOrderByCreatedAtDesc(username);
+    }
+
+    public List<PrintJob> getAllJob() {
+        return repository.findPrintJobsByOrderByCreatedAtDesc();
     }
 
     public GridFsResource getFile(String gridFsName) {
