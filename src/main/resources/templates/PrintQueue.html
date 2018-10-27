@@ -103,7 +103,40 @@
                                    th:text="${row.filename}">
                                 </a>
                             </td>
-                            <td th:text="${row.status}"></td>
+                            <td>
+                                <div class="select is-rounded is-small">
+                                    <form id="status-form" onchange="updateStatus(this)">
+                                        <input type="hidden" th:value="${row.id}">
+                                        <select th:name="*{row}">
+                                            <option th:each="status : ${statuses}"
+                                                    th:value="${status}"
+                                                    th:text="${status}"
+                                                    th:selected="${row.status == status}">
+                                            </option>
+                                        </select>
+                                    </form>
+
+                                    <script type="text/javascript">
+                                        function updateStatus(form) {
+                                            var jobId = form.elements[0].value;
+                                            var status = form.elements[1].value;
+                                            $.ajax({
+                                                type: "POST",
+                                                url: "/api/admin/job/update",
+                                                data: {
+                                                    "jobId": jobId,
+                                                    "status": status
+                                                },
+                                                error: notifyUpdateStatusError
+                                            });
+                                        }
+
+                                        function notifyUpdateStatusError() {
+                                            alert("Failed to Update Status");
+                                        }
+                                    </script>
+                                </div>
+                            </td>
                         </tr>
                         </tbody>
                     </table>

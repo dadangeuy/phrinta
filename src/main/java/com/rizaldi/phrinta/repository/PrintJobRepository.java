@@ -9,6 +9,5 @@ import java.util.List;
 @Repository
 public interface PrintJobRepository extends MongoRepository<PrintJob, String> {
     List<PrintJob> findByUser_UsernameOrderByCreatedAtDesc(String user_username);
-
     List<PrintJob> findPrintJobsByOrderByCreatedAtDesc();
 }

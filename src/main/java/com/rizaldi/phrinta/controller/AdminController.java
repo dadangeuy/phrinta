@@ -27,6 +27,7 @@ public class AdminController {
     public String queueList(Model model) {
         List<PrintJob> printJobs = service.getAllJob();
         model.addAttribute("rows", printJobs);
+        model.addAttribute("statuses", PrintJob.Status.values());
         return "PrintQueue";
     }
 }

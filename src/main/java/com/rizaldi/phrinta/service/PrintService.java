@@ -3,8 +3,6 @@ package com.rizaldi.phrinta.service;
 import com.rizaldi.phrinta.model.PrintJob;
 import com.rizaldi.phrinta.model.User;
 import com.rizaldi.phrinta.repository.PrintJobRepository;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.gridfs.GridFsResource;
 import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.stereotype.Service;
@@ -45,6 +43,12 @@ public class PrintService {
         return job;
     }
 
+    public PrintJob updateJob(String id, PrintJob.Status status) {
+        PrintJob job = repository.findById(id).get();
+        job.setStatus(status);
+        return repository.save(job);
+    }
+
     public List<PrintJob> findJob(String username) {
         return repository.findByUser_UsernameOrderByCreatedAtDesc(username);
     }
@@ -55,10 +59,5 @@ public class PrintService {
 
     public GridFsResource getFile(String gridFsName) {
         return gridFsTemplate.getResource(gridFsName);
-    }
-
-    private Query gridFsIdQuery(String id) {
-        return Query.query(
-                Criteria.where("_id").is(id));
     }
 }
