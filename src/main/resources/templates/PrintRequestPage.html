@@ -44,20 +44,21 @@
                           onsubmit="disableSubmit()">
                         <div class="file has-name is-fullwidth" style="margin-bottom: 10px">
                             <label class="file-label">
-                                <input class="file-input" type="file" name="file" required
+                                <input class="file-input" type="file" name="file" accept=".txt,.c,.cpp,.java" required
                                        onchange="showFileName(this.value)">
                                 <span class="file-cta">
                                   <span class="file-icon"><i class="fas fa-upload"></i></span>
                                   <span class="file-label">Choose a file…</span>
                                 </span>
-                                <span id="filename" class="file-name"></span>
+                                <span id="filename" class="file-name">Select a File (.txt, .c, .cpp, or .java)</span>
 
                                 <!-- Update File Name -->
                                 <script type="text/javascript">
                                     var filenameContainer = document.getElementById("filename");
 
                                     function showFileName(name) {
-                                        filenameContainer.textContent = name;
+                                        if (name == null || name === "") filenameContainer.textContent = "Select a File (.txt, .c, .cpp, or .java)";
+                                        else filenameContainer.textContent = name;
                                     }
                                 </script>
 
