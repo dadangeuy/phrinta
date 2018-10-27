@@ -28,6 +28,6 @@ public class AdminController {
         List<PrintJob> printJobs = service.getAllJob();
         model.addAttribute("rows", printJobs);
         model.addAttribute("statuses", PrintJob.Status.values());
-        return "PrintQueue";
+        return "PrintQueuePage";
     }
 }
