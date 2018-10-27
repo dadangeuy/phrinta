@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" th:href="${icon}">
     <title>Print Queue</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
@@ -13,12 +14,7 @@
     <div class="container">
         <div class="navbar-brand">
             <div class="navbar-item">
-            <span>
-                <p class="title">Phrinta</p>
-            </span>
-                <span class="icon is-large has-text-primary">
-                  <i class="fas fa-2x fa-copy"></i>
-                </span>
+                <p class="title" th:text="${title}"></p>
             </div>
         </div>
 

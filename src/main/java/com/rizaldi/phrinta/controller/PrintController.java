@@ -1,5 +1,6 @@
 package com.rizaldi.phrinta.controller;
 
+import com.rizaldi.phrinta.config.WebConfig;
 import com.rizaldi.phrinta.model.PrintJob;
 import com.rizaldi.phrinta.service.PrintService;
 import org.slf4j.Logger;
@@ -21,14 +22,20 @@ import java.util.List;
 @RequestMapping("print")
 public class PrintController {
     private static final Logger LOG = LoggerFactory.getLogger(PrintController.class);
+    private final String title;
+    private final String icon;
     private final PrintService service;
 
-    public PrintController(PrintService service) {
+    public PrintController(WebConfig config, PrintService service) {
+        this.title = config.getTitle();
+        this.icon = config.getIcon();
         this.service = service;
     }
 
     @GetMapping("")
     public String print(Authentication auth, Model model) {
+        model.addAttribute("title", title);
+        model.addAttribute("icon", icon);
         List<PrintJob> jobs = service.findJob(auth.getName());
         model.addAttribute("rows", jobs);
         return "PrintRequestPage";
