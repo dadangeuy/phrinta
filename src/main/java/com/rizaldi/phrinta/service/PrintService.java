@@ -32,7 +32,7 @@ public class PrintService {
         repository.insert(job);
 
         // save file
-        String uniqueFilename = String.format("%.4s-%s-%s", job.getId(), username, file.getOriginalFilename());
+        String uniqueFilename = String.format("%s-%s-%s", job.getId(), username, file.getOriginalFilename());
         gridFsTemplate.store(file.getInputStream(), uniqueFilename, file.getContentType());
 
         // update job
