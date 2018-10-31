@@ -17,7 +17,7 @@ import java.util.Date;
 @Data
 @Document(collection = "print.job")
 @CompoundIndexes({
-        @CompoundIndex(def = "{'user.username':1}")
+        @CompoundIndex(def = "{'user.id':1}")
 })
 public class PrintJob {
     private static final DateFormat format = new SimpleDateFormat("dd MMMM yyyy, HH:mm");
