@@ -30,17 +30,20 @@ dependencies {
     implementation('org.springframework.boot:spring-boot-starter-data-mongodb')
     implementation('org.springframework.boot:spring-boot-starter-security')
     implementation('org.springframework.boot:spring-boot-starter-thymeleaf')
-    implementation('org.springframework.boot:spring-boot-starter-web')
+    implementation('org.springframework.boot:spring-boot-starter-web') {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
+    }
+    implementation('org.springframework.boot:spring-boot-starter-jetty')
     implementation('org.springframework.session:spring-session-core')
     implementation('commons-io:commons-io:2.6')
     implementation('com.google.guava:guava:26.0-jre')
     compile('org.apache.commons:commons-lang3:3.8.1')
-    
+
     // Development
     runtimeOnly('org.springframework.boot:spring-boot-devtools')
     compileOnly('org.springframework.boot:spring-boot-configuration-processor')
     compileOnly('org.projectlombok:lombok')
-    
+
     // Testing
     testImplementation('org.springframework.boot:spring-boot-starter-test')
     testImplementation('de.flapdoodle.embed:de.flapdoodle.embed.mongo')
