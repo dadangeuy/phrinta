@@ -57,7 +57,8 @@
                         </thead>
 
                         <tbody>
-                        <tr th:each="row : ${rows}">
+                        <tr th:each="row : ${rows}"
+                            th:classappend="${row.status.name() == 'WAITING'} ? is-selected : ''">
                             <td th:text="${row.getCreatedAtDateFormat()}"></td>
                             <td th:text="${row.user.username}"></td>
                             <td th:text="${row.user.name}"></td>
@@ -90,12 +91,17 @@
                                                     "jobId": jobId,
                                                     "status": status
                                                 },
-                                                error: notifyUpdateStatusError
+                                                error: notifyUpdateStatusError,
+                                                success: refreshPage
                                             });
                                         }
 
                                         function notifyUpdateStatusError() {
                                             alert("Failed to Update Status");
+                                        }
+
+                                        function refreshPage() {
+                                            location.reload();
                                         }
                                     </script>
                                 </div>
